@@ -1,28 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import DescriptionCard from './components/DescriptionCard';
+import './styles/index.css';
 
 const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit
-        {' '}
-        <code>src/App.tsx</code>
-        {' '}
-        and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
+  <main className="bg-gray-200 h-screen flex justify-center items-center font-sans">
+    <DescriptionCard />
+  </main>
 );
 
 export default App;
