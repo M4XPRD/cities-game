@@ -14,7 +14,7 @@
 Все команды запускаются из корня проекта:
 
 # Шаг 1 — Клонируем репозиторий
-$ https://github.com/M4XPRD/cities-game
+$ https://github.com/M4XPRD/word-chain-game
 
 # Шаг 2 — Устанавливаем зависимости и одновременно запускаем проект
 $ make start
