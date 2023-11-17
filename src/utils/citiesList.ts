@@ -1,4 +1,4 @@
-const citiesList: string[] = [
+export const citiesList: string[] = [
   'Абакан',
   'Азов',
   'Александров',
@@ -322,4 +322,7 @@ const citiesList: string[] = [
   'Ярославль',
 ];
 
-export default citiesList;
+export const updateCitiesList = (enteredCity: string): void => {
+  const usedCityIndex = citiesList.indexOf(enteredCity);
+  citiesList.splice(usedCityIndex, 1);
+};
