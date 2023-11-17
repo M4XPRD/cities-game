@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable import/no-extraneous-dependencies */
 
 export default {
@@ -7,5 +8,7 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };
