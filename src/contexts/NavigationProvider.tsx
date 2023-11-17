@@ -1,10 +1,10 @@
 import {
   useCallback, useMemo, useState,
 } from 'react';
-import { NavigatorProviderProps } from '../types/navigationContext';
 import NavigationContext from './NavigationContext';
+import { ProviderProps } from '../types/contextTypes';
 
-const NavigationProvider = ({ children }: NavigatorProviderProps) => {
+const NavigationProvider = ({ children }: ProviderProps) => {
   const [page, setPage] = useState(1);
 
   const handleNextPage = useCallback(() => {

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { NavigatorContext } from '../types/navigationContext';
+import { NavigatorContext } from '../types/contextTypes';
 
 const defaultValues = {
   page: 1,
