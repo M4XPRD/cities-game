@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import useNavigation from '../hooks/navigationHook';
-import { GameRules } from '../types/gameRules';
+import useNavigation from '../../hooks/navigationHook';
+import { GameRules } from '../../types/gameRules';
 
 const rules: GameRules[] = [
   { key: 'first', text: 'Запрещается повторение городов.' },
