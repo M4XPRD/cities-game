@@ -11,6 +11,7 @@ export type NavigatorContext = {
 };
 
 export type GameLogicContextTypes = {
-  turn: string,
+  currentPlayer: string,
+  turns: number,
   handleNextTurn: () => void,
 };
