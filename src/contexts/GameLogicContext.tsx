@@ -2,7 +2,8 @@ import { createContext } from 'react';
 import { GameLogicContextTypes } from '../types/contextTypes';
 
 const defaultValues = {
-  turn: 'human',
+  currentPlayer: 'human',
+  turns: 0,
   handleNextTurn: () => {},
 };
 
