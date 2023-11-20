@@ -326,3 +326,5 @@ export const updateCitiesList = (enteredCity: string): void => {
   const usedCityIndex = citiesList.indexOf(enteredCity);
   citiesList.splice(usedCityIndex, 1);
 };
+
+export const restrictedLetters = ['ь', 'ъ', 'ы'];
