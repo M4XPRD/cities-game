@@ -1,28 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ReactComponent as SendMessageIcon } from '../../assets/send_message.svg';
 import { ReactComponent as SendMessageDisabledIcon } from '../../assets/send_message_disabled.svg';
 import useGameLogic from '../../hooks/gameLogicHook';
-import { citiesList, updateCitiesList } from '../../utils/citiesList';
 
 const GameCard = () => {
-  const { currentPlayer, turns, handleNextTurn } = useGameLogic();
-  const [enteredCities, setEnteredCities] = useState<string[]>([]);
-  const [errorMessage, setErrorMessage] = useState<boolean>(false);
+  const {
+    currentPlayer,
+    turns,
+    activeLetter,
+    errorMessage,
+    enteredCities,
+    handleTurnValidation,
+  } = useGameLogic();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(false);
 
     if (inputRef.current) {
       const enteredCity = inputRef.current.value;
-      if (citiesList.includes(enteredCity)) {
-        setEnteredCities([...enteredCities, enteredCity]);
-        updateCitiesList(enteredCity);
-        handleNextTurn();
-      } else {
-        setErrorMessage(true);
-      }
+      handleTurnValidation(enteredCity);
       inputRef.current.value = '';
     }
   };
@@ -39,9 +36,16 @@ const GameCard = () => {
     ? 'Сейчас ваша очередь'
     : 'Сейчас очередь соперника';
 
-  const placeholderText = errorMessage
-    ? 'Введите другой город'
-    : 'Напишите любой город, например: Где вы живете?';
+  const placeholderText = () => {
+    if (turns < 1) {
+      return 'Напишите любой город, например: Где вы живете?';
+    }
+    if (currentPlayer === 'human') {
+      return `Знаете город на букву "${activeLetter?.toUpperCase()}"?`;
+    }
+    return 'Ожидаем ответа соперника...';
+  };
+
   return (
     <div className="w-[576px] h-[464px]">
       <header className="flex flex-row justify-between items-center w-full text-center bg-white rounded-t-[16px] h-[64px] border-gray-100 pl-[16px] pr-[16px]">
@@ -80,7 +84,9 @@ const GameCard = () => {
               aria-label="Ввести город"
               name="enterCity"
               className="bg-gray-100 w-[544px] h-[48px] rounded-[6px] prose-base pl-[12px] text-gray-700 outline-none"
-              placeholder={placeholderText}
+              placeholder={
+                errorMessage ? 'Введите другой город' : placeholderText()
+              }
               autoComplete="off"
               readOnly={currentPlayer === 'ai'}
             />
