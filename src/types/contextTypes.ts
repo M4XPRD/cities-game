@@ -13,5 +13,9 @@ export type NavigatorContext = {
 export type GameLogicContextTypes = {
   currentPlayer: string,
   turns: number,
+  enteredCities: string[],
+  activeLetter: string,
+  errorMessage: boolean,
   handleNextTurn: () => void,
+  handleTurnValidation: (city: string) => void,
 };
