@@ -6,7 +6,8 @@ const defaultValues = {
   turns: 0,
   enteredCities: [],
   activeLetter: '',
-  errorMessage: false,
+  timeLeft: 120,
+  gameOver: false,
   handleNextTurn: () => {},
   handleTurnValidation: () => {},
 };

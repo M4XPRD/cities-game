@@ -11,7 +11,8 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
   const [currentPlayer, setCurrentPlayer] = useState<string>('human');
   const [activeLetter, setActiveLetter] = useState< string>('');
   const [enteredCities, setEnteredCities] = useState<string[]>([]);
-  const [errorMessage, setErrorMessage] = useState<boolean>(false);
+  const [timeLeft, setTimeLeft] = useState<number>(120);
+  const [gameOver, setGameOver] = useState<boolean>(false);
   const [turns, setTurns] = useState<number>(0);
 
   const handleNextTurn = useCallback(() => {
@@ -26,13 +27,9 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
       const firstCondition = restrictedLetters.includes(lastLetter);
       const secondCondition = citiesList.filter((city) => city.startsWith(lastLetter));
 
-      console.log(secondCondition);
-
       const filteredLastLetter = firstCondition || secondCondition.length === 0
         ? penultimateLetter
         : lastLetter;
-
-      console.log(firstCondition, '||', secondCondition.length === 0);
 
       setActiveLetter(filteredLastLetter);
     }
@@ -48,10 +45,7 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
         updateCitiesList(standardizedWord);
         handleNextTurn();
       } else {
-        console.log(standardizedWord.startsWith(activeLetter));
-        console.log(citiesList.includes(standardizedWord));
-        console.log(!enteredCities.includes(standardizedWord));
-        console.log('ошибка');
+        console.log('Ошибка');
       }
     }
   };
@@ -69,12 +63,34 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
     setupNewActiveLetter(pickedCity);
   };
 
+  useEffect(() => {
+    const updateTimer = () => {
+      if (gameOver) {
+        return;
+      }
+      setTimeLeft((prevTime) => {
+        if (prevTime === 0) {
+          setGameOver(true);
+        }
+        return prevTime > 0 ? prevTime - 1 : 0;
+      });
+    };
+
+    const timerInterval = setInterval(updateTimer, 1000);
+
+    setTimeLeft(120);
+    setGameOver(false);
+
+    return () => clearInterval(timerInterval);
+  }, [currentPlayer]);
+
   const providedData = useMemo(
     () => ({
       currentPlayer,
       turns,
+      timeLeft,
       activeLetter,
-      errorMessage,
+      gameOver,
       handleNextTurn,
       enteredCities,
       handleTurnValidation,
@@ -82,7 +98,6 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
     [currentPlayer,
       turns,
       activeLetter,
-      errorMessage,
       handleNextTurn,
       enteredCities,
       handleTurnValidation,
@@ -90,8 +105,8 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
   );
 
   useEffect(() => {
-    const minDelay = 1000;
-    const maxDelay = 3000;
+    const minDelay = 3000;
+    const maxDelay = 10000;
     const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay;
 
     if (currentPlayer === 'ai') {

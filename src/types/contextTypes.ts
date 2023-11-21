@@ -15,7 +15,8 @@ export type GameLogicContextTypes = {
   turns: number,
   enteredCities: string[],
   activeLetter: string,
-  errorMessage: boolean,
+  timeLeft: number,
+  gameOver: boolean,
   handleNextTurn: () => void,
   handleTurnValidation: (city: string) => void,
 };
