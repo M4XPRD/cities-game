@@ -5,10 +5,15 @@ import NavigationContext from './NavigationContext';
 import { ProviderProps } from '../types/contextTypes';
 
 const NavigationProvider = ({ children }: ProviderProps) => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(3);
 
   const handleNextPage = useCallback(() => {
-    setPage((previousPage) => previousPage + 1);
+    setPage((previousPage) => {
+      if (previousPage === 3) {
+        return 1;
+      }
+      return previousPage + 1;
+    });
   }, []);
 
   const handleResetApp = useCallback(() => {
