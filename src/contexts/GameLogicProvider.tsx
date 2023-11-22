@@ -15,7 +15,7 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
   const [gameCitiesList, setGameCitiesList] = useState<string[]>(Object.assign([], citiesList));
   const [enteredCities, setEnteredCities] = useState<string[]>([]);
   const [timeLeft, setTimeLeft] = useState<number>(120);
-  const [gameOver, setGameOver] = useState<boolean>(false);
+  const [gameOver, setGameOver] = useState({ reason: '', isFinished: false });
   const [turns, setTurns] = useState<number>(0);
   const { page } = useNavigation();
 
@@ -76,13 +76,17 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
 
   useEffect(() => {
     const updateTimer = () => {
-      if (gameOver) {
+      if (gameOver.isFinished) {
         return;
       }
       if (page === 2) {
         setTimeLeft((prevTime) => {
           if (prevTime === 0) {
-            setGameOver(true);
+            setGameOver((previousState) => ({
+              ...previousState,
+              reason: 'no-time-left',
+              isFinished: true,
+            }));
           }
           return prevTime > 0 ? prevTime - 1 : 0;
         });
@@ -91,9 +95,7 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
 
     const timerInterval = setInterval(updateTimer, 1000);
 
-    setTimeLeft(3);
-    setGameOver(false);
-
+    setTimeLeft(10);
     return () => clearInterval(timerInterval);
   }, [currentPlayer, page]);
 
@@ -103,7 +105,11 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
       setCurrentPlayer('human');
       setGameCitiesList(Object.assign([], citiesList));
       setEnteredCities(Object.assign([]));
-      setGameOver(false);
+      setGameOver((previousState) => ({
+        ...previousState,
+        reason: '',
+        isFinished: false,
+      }));
       setActiveLetter('');
     }
   }, [page]);
@@ -111,8 +117,8 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | null = null;
     if (currentPlayer === 'ai' && page === 2) {
-      const minDelay = 4000;
-      const maxDelay = 6000;
+      const minDelay = 2000;
+      const maxDelay = 5000;
       const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay;
 
       timeoutId = setTimeout(() => {
@@ -132,7 +138,11 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
   useEffect(() => {
     if (checkLoseCondition()) {
       setTimeout(() => {
-        setGameOver(true);
+        setGameOver((previousState) => ({
+          ...previousState,
+          reason: 'no-cities-left',
+          isFinished: true,
+        }));
       }, 3000);
     }
   }, [currentPlayer]);

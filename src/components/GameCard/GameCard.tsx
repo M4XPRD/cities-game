@@ -40,7 +40,7 @@ const GameCard = () => {
   }, [enteredCities]);
 
   useEffect(() => {
-    if (gameOver) {
+    if (gameOver.isFinished) {
       handleNextPage();
     }
   }, [gameOver]);

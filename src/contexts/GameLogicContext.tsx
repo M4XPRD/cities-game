@@ -7,7 +7,7 @@ const defaultValues = {
   enteredCities: [],
   activeLetter: '',
   timeLeft: 120,
-  gameOver: false,
+  gameOver: { reason: '', isFinished: false },
   handleNextTurn: () => {},
   handleTurnValidation: () => {},
 };
