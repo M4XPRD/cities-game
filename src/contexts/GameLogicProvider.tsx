@@ -4,84 +4,137 @@ import {
 } from 'react';
 import GameLogicContext from './GameLogicContext';
 import { ProviderProps } from '../types/contextTypes';
-import { restrictedLetters, citiesList, updateCitiesList } from '../utils/citiesList';
+import citiesList from '../utils/citiesList';
 import standardizeWord from '../utils/standardizeWord';
+import useNavigation from '../hooks/navigationHook';
+import restrictedLetters from '../utils/restrictedLetters';
 
 const GameLogicProvider = ({ children }: ProviderProps) => {
-  const [currentPlayer, setCurrentPlayer] = useState<string>('human');
-  const [activeLetter, setActiveLetter] = useState< string>('');
+  const [currentPlayer, setCurrentPlayer] = useState<string>('');
+  const [activeLetter, setActiveLetter] = useState<string>('');
+  const [gameCitiesList, setGameCitiesList] = useState<string[]>(Object.assign([], citiesList));
   const [enteredCities, setEnteredCities] = useState<string[]>([]);
   const [timeLeft, setTimeLeft] = useState<number>(120);
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [turns, setTurns] = useState<number>(0);
+  const { page } = useNavigation();
 
   const handleNextTurn = useCallback(() => {
     setTurns((previousAmount) => previousAmount + 1);
     setCurrentPlayer((previousPlayer) => (previousPlayer === 'human' ? 'ai' : 'human'));
   }, []);
 
-  const setupNewActiveLetter = useCallback((newCity: string) => {
-    if (newCity) {
-      const lastLetter = newCity[newCity.length - 1].toUpperCase();
-      const penultimateLetter = newCity[newCity.length - 2].toUpperCase();
-      const firstCondition = restrictedLetters.includes(lastLetter);
-      const secondCondition = citiesList.filter((city) => city.startsWith(lastLetter));
-
-      const filteredLastLetter = firstCondition || secondCondition.length === 0
-        ? penultimateLetter
-        : lastLetter;
-
-      setActiveLetter(filteredLastLetter);
+  const checkLoseCondition = useCallback(() => {
+    const filteredCities = gameCitiesList.filter((city) => city.startsWith(activeLetter));
+    if (filteredCities.length === 0) {
+      return true;
     }
+    return false;
+  }, [gameCitiesList, activeLetter]);
+
+  const setupNewActiveLetter = useCallback((newCity: string) => {
+    const penultimateNumber = 2;
+    const lastLetter = newCity[newCity.length - 1].toUpperCase();
+    const penultimateLetter = newCity[newCity.length - penultimateNumber].toUpperCase();
+    const firstCondition = restrictedLetters.includes(lastLetter);
+    const secondCondition = gameCitiesList.filter((city) => city.startsWith(lastLetter));
+
+    const filteredLastLetter = firstCondition || secondCondition.length === 0
+      ? penultimateLetter
+      : lastLetter;
+
+    setActiveLetter(filteredLastLetter);
   }, []);
 
-  const handleTurnValidation = (newCity?: string) => {
-    if (newCity) {
-      const standardizedWord = standardizeWord(newCity);
+  const updateCitiesList = (enteredCity: string): void => {
+    const usedCityIndex = gameCitiesList.indexOf(enteredCity);
+    gameCitiesList.splice(usedCityIndex, 1);
+  };
 
-      if (standardizedWord.startsWith(activeLetter) && citiesList.includes(standardizedWord) && !enteredCities.includes(standardizedWord)) {
-        setupNewActiveLetter(standardizedWord);
-        setEnteredCities([...enteredCities, standardizedWord]);
-        updateCitiesList(standardizedWord);
-        handleNextTurn();
-      } else {
-        console.log('Ошибка');
-      }
+  const handleTurnValidation = (newCity: string) => {
+    const standardizedWord = standardizeWord(newCity);
+    if (standardizedWord.startsWith(activeLetter) && gameCitiesList.includes(standardizedWord) && !enteredCities.includes(standardizedWord)) {
+      setupNewActiveLetter(standardizedWord);
+      setEnteredCities((prevEnteredCities) => [...prevEnteredCities, standardizedWord]);
+      updateCitiesList(standardizedWord);
+      handleNextTurn();
+    } else {
+      console.log('Ошибка');
     }
   };
 
-  const handleAiTurn = () => {
+  const handleAiTurn = useCallback(() => {
     const pickRandomCity = () => {
-      const filteredCities = citiesList.filter((city) => city.startsWith(activeLetter));
-
+      const filteredCities = gameCitiesList.filter((city) => city.startsWith(activeLetter));
       const randomIndex = Math.floor(Math.random() * filteredCities.length);
-
       return filteredCities[randomIndex];
     };
     const pickedCity = pickRandomCity();
     handleTurnValidation(pickedCity);
     setupNewActiveLetter(pickedCity);
-  };
+  }, [activeLetter]);
 
   useEffect(() => {
     const updateTimer = () => {
       if (gameOver) {
         return;
       }
-      setTimeLeft((prevTime) => {
-        if (prevTime === 0) {
-          setGameOver(true);
-        }
-        return prevTime > 0 ? prevTime - 1 : 0;
-      });
+      if (page === 2) {
+        setTimeLeft((prevTime) => {
+          if (prevTime === 0) {
+            setGameOver(true);
+          }
+          return prevTime > 0 ? prevTime - 1 : 0;
+        });
+      }
     };
 
     const timerInterval = setInterval(updateTimer, 1000);
 
-    setTimeLeft(120);
+    setTimeLeft(3);
     setGameOver(false);
 
     return () => clearInterval(timerInterval);
+  }, [currentPlayer, page]);
+
+  useEffect(() => {
+    if (page === 1) {
+      setTurns(0);
+      setCurrentPlayer('human');
+      setGameCitiesList(Object.assign([], citiesList));
+      setEnteredCities(Object.assign([]));
+      setGameOver(false);
+      setActiveLetter('');
+    }
+  }, [page]);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+    if (currentPlayer === 'ai' && page === 2) {
+      const minDelay = 4000;
+      const maxDelay = 6000;
+      const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay;
+
+      timeoutId = setTimeout(() => {
+        handleAiTurn();
+      }, randomDelay);
+    } else if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+    return () => {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [currentPlayer, page]);
+
+  useEffect(() => {
+    if (checkLoseCondition()) {
+      setTimeout(() => {
+        setGameOver(true);
+      }, 3000);
+    }
   }, [currentPlayer]);
 
   const providedData = useMemo(
@@ -95,26 +148,17 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
       enteredCities,
       handleTurnValidation,
     }),
-    [currentPlayer,
+    [
+      currentPlayer,
       turns,
+      timeLeft,
       activeLetter,
+      gameOver,
       handleNextTurn,
       enteredCities,
       handleTurnValidation,
     ],
   );
-
-  useEffect(() => {
-    const minDelay = 3000;
-    const maxDelay = 10000;
-    const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay;
-
-    if (currentPlayer === 'ai') {
-      setTimeout(() => {
-        handleAiTurn();
-      }, randomDelay);
-    }
-  }, [currentPlayer]);
 
   return (
     <GameLogicContext.Provider value={providedData}>

@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { GameLogicContextTypes } from '../types/contextTypes';
 
 const defaultValues = {
-  currentPlayer: 'human',
+  currentPlayer: '',
   turns: 0,
   enteredCities: [],
   activeLetter: '',
