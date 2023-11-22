@@ -35,8 +35,8 @@ const EndgameCard = () => {
         <span>Очень неплохой результат!</span>
       </div>
       <div className="flex flex-col justify-center items-center">
-        <p className="text-xl">Последний город, названный победителем</p>
-        <p className="text-2xl font-semibold">{lastEnteredCity || 'Москва'}</p>
+        <p className="text-xl">Последний город, названный победителем:</p>
+        <p className="text-2xl font-semibold">{lastEnteredCity || 'Не назван :('}</p>
       </div>
       <button
         type="button"
