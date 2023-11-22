@@ -1,9 +1,10 @@
-export const citiesList: string[] = [
+const citiesList: string[] = [
   'Абакан',
   'Азов',
   'Александров',
   'Алексин',
   'Альметьевск',
+  'Анадырь',
   'Анапа',
   'Ангарск',
   'Анжеро-Судженск',
@@ -322,9 +323,4 @@ export const citiesList: string[] = [
   'Ярославль',
 ];
 
-export const updateCitiesList = (enteredCity: string): void => {
-  const usedCityIndex = citiesList.indexOf(enteredCity);
-  citiesList.splice(usedCityIndex, 1);
-};
-
-export const restrictedLetters = ['ь', 'ъ', 'ы'];
+export default citiesList;
