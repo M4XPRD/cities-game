@@ -2,7 +2,7 @@
 import useNavigation from '../../hooks/navigationHook';
 import rules from '../../utils/gameRules';
 
-const Content = () => {
+const WelcomeCardContent = () => {
   const { handleNextPage } = useNavigation();
 
   return (
@@ -30,4 +30,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default WelcomeCardContent;

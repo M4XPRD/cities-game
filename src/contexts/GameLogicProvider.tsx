@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
@@ -17,6 +16,7 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
   const [timeLeft, setTimeLeft] = useState<number>(120);
   const [gameOver, setGameOver] = useState({ reason: '', isFinished: false });
   const [turns, setTurns] = useState<number>(0);
+
   const { page } = useNavigation();
 
   const handleNextTurn = useCallback(() => {
@@ -53,7 +53,12 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
 
   const handleTurnValidation = (newCity: string) => {
     const standardizedWord = standardizeWord(newCity);
-    if (standardizedWord.startsWith(activeLetter) && gameCitiesList.includes(standardizedWord) && !enteredCities.includes(standardizedWord)) {
+
+    const firstCondition = standardizedWord.startsWith(activeLetter);
+    const secondCondition = gameCitiesList.includes(standardizedWord);
+    const thirdCondition = !enteredCities.includes(standardizedWord);
+
+    if (firstCondition && secondCondition && thirdCondition) {
       setupNewActiveLetter(standardizedWord);
       setEnteredCities((prevEnteredCities) => [...prevEnteredCities, standardizedWord]);
       updateCitiesList(standardizedWord);

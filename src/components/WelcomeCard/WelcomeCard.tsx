@@ -1,7 +1,11 @@
-import React from 'react';
+import WelcomeCardContent from './WelcomeCardContent';
+import WelcomeCardHeader from './WelcomeCardHeader';
 
 const WelcomeCard = () => (
-  <div>WelcomeCard</div>
+  <div className="max-w-xl max-h-l">
+    <WelcomeCardHeader />
+    <WelcomeCardContent />
+  </div>
 );
 
 export default WelcomeCard;
