@@ -1,6 +1,6 @@
 import EndgameCard from './components/EndgameCard/EndgameCard';
 import GameCard from './components/GameCard/GameCard';
-import DescriptionCard from './components/WelcomeCard/DescriptionCard';
+import WelcomeCard from './components/WelcomeCard/WelcomeCard';
 import useNavigation from './hooks/navigationHook';
 import './styles/index.css';
 import { PagesMappingTypes } from './types/pagesMappingTypes';
@@ -9,7 +9,7 @@ const App = () => {
   const { page } = useNavigation();
 
   const pagesMapping: PagesMappingTypes = {
-    1: <DescriptionCard />,
+    1: <WelcomeCard />,
     2: <GameCard />,
     3: <EndgameCard />,
   };
