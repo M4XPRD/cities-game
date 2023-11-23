@@ -16,7 +16,13 @@ const EndgameCard = () => (
   rounded-t-[16px]
   bg-white
   rounded-b-[16px]
-  shadow-md"
+  shadow-md
+  md:w-[80%]
+  md:h-[360px]
+  md:text-sm
+  sm:h-[450px]
+  vsm:h-[510px]
+  "
   >
     <EndgameCardResults />
     <EndgameCardStats />

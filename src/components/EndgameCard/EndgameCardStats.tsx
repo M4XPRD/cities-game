@@ -7,7 +7,7 @@ const EndgameCardStats = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center text-gray-700">
-        <span>{`Всего было перечислено городов: ${enteredCities.length}`}</span>
+        <span className="text-center">{`Всего было перечислено городов: ${enteredCities.length}`}</span>
         <span>
           {enteredCities.length < 5
             ? 'Неплохо, но нужно разыграться! '
@@ -15,8 +15,8 @@ const EndgameCardStats = () => {
         </span>
       </div>
       <div className="flex flex-col justify-center items-center">
-        <p className="text-xl">Последний город, названный победителем:</p>
-        <p className="text-2xl font-semibold">
+        <p className="text-xl md:text-sm text-center">Последний город, названный победителем:</p>
+        <p className="text-2xl md:text-sm font-semibold text-center">
           {lastEnteredCity || 'Не назван :('}
         </p>
       </div>
