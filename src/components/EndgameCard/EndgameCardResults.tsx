@@ -26,7 +26,7 @@ const EndgameCardResults = () => {
         </div>
       )}
       <div className="text-center">
-        <p className="text-red-600 text-3xl font-semibold">00:00</p>
+        <p className={`${currentPlayer === 'human' ? 'text-green-600' : 'text-red-600'} text-3xl font-semibold`}>00:00</p>
       </div>
     </>
   );
