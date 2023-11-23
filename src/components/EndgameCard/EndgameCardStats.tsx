@@ -8,7 +8,7 @@ const EndgameCardStats = () => {
     <>
       <div className="flex flex-col justify-center items-center text-gray-700">
         <span className="text-center">{`Всего было перечислено городов: ${enteredCities.length}`}</span>
-        <span>
+        <span className="text-center">
           {enteredCities.length < 5
             ? 'Неплохо, но нужно разыграться! '
             : 'Хороший результат!'}

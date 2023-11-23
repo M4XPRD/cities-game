@@ -8,8 +8,8 @@ const EndgameCardResults = () => {
     <>
       {currentPlayer === 'human' ? (
         <div className="flex flex-col justify-center items-center">
-          <p>Твой противник победил!</p>
-          <p>
+          <p className="text-center">Твой противник победил!</p>
+          <p className="text-center">
             {reason === 'no-time-left'
               ? 'К сожалению, твое время вышло!'
               : 'Список городов закончился'}
@@ -17,8 +17,8 @@ const EndgameCardResults = () => {
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center">
-          <p>Поздравляем тебя с победой!</p>
-          <p>
+          <p className="text-center">Поздравляем тебя с победой!</p>
+          <p className="text-center">
             {reason === 'no-time-left'
               ? 'Твой противник не вспомнил нужный город!'
               : 'Список городов закончился'}
