@@ -1,12 +1,6 @@
-/* Создание точек в списке */
-
 ul {
   list-style: none;
 }
-
-/* li {
-  text-indent: -6px;
-} */
 
 ul li::before {
   content: "";
