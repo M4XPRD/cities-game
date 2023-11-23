@@ -98,8 +98,7 @@ Pixel Perfect оценивать не будем, но жирным плюсом
 [Деплой](https://bit.ly/m4xprd-word-chain) приложения.
 
 ![Screenshot_2](https://github.com/M4XPRD/word-chain-game/assets/86636158/b4ed5190-00ef-4014-ae5e-17e3c8878958)
-![Screenshot_3](https://github.com/M4XPRD/word-chain-game/assets/86636158/e1f10fae-a902-4075-8ea1-5fe7fc65eb64)
-
+![Screenshot_4](https://github.com/M4XPRD/word-chain-game/assets/86636158/63d45845-de69-49a4-9422-79a20b37851c)
 
 ### Что получилось в итоге:
    - Приложение построено в стеке `React` + `TypeScript`
