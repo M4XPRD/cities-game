@@ -24,7 +24,7 @@ const GameCardMainField = () => {
     <>
       <section className="flex flex-col h-[276px] gap-[8px] pt-[40px] bg-white prose-sm overflow-y-scroll no-scrollbar">
         {turns < 1 ? (
-          <div className="flex justify-center items-center h-[100%] prose-sm text-gray-400">
+          <div className="flex justify-center items-center h-[100%] prose-sm text-gray-400 text-center">
             Первый участник вспоминает города...
           </div>
         ) : (

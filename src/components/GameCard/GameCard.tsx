@@ -4,7 +4,7 @@ import GameCardMainField from './GameCardMainField';
 import GameCardInputForm from './GameCardInputForm';
 
 const GameCard = () => (
-  <div className="w-[576px] h-[464px]">
+  <div className="w-[576px] h-[464px] md:w-[80%]">
     <GameCardHeader />
     <GameCardCountdownBar />
     <GameCardMainField />

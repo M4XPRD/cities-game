@@ -12,7 +12,7 @@ const GameCardInputForm = () => {
 
   const placeholderText = () => {
     if (turns < 1) {
-      return 'Напишите любой город, например: Где вы живете?';
+      return 'Напишите любой город';
     }
     if (currentPlayer === 'human') {
       return `Знаете город на букву "${activeLetter?.toUpperCase()}"?`;
@@ -31,14 +31,17 @@ const GameCardInputForm = () => {
   };
   return (
     <section className="h-[75px] bg-white rounded-b-[16px] shadow-md flex justify-center items-center">
-      <form className="relative" onSubmit={handleSubmit}>
+      <form
+        className="relative w-[100%] rounded-[6px] bg-gray-100 ml-[16px] mr-[16px]"
+        onSubmit={handleSubmit}
+      >
         <label htmlFor="enterCity">
           <input
             ref={inputRef}
             type="text"
             aria-label="Ввести город"
             name="enterCity"
-            className="bg-gray-100 w-[544px] h-[48px] rounded-[6px] prose-base pl-[12px] text-gray-700 outline-none"
+            className="bg-gray-100 w-[80%] rounded-[16px] h-[48px] prose-base pl-[12px] text-gray-700 outline-none md:placeholder:prose-sm vsm:placeholder:text-[10px]"
             placeholder={placeholderText()}
             autoComplete="off"
             readOnly={currentPlayer === 'ai'}
