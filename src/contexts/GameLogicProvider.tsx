@@ -1,5 +1,5 @@
 import {
-  useCallback, useEffect, useMemo, useState,
+  useEffect, useMemo, useState,
 } from 'react';
 import GameLogicContext from './GameLogicContext';
 import { ProviderProps } from '../types/contextTypes';
@@ -19,20 +19,20 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
 
   const { page } = useNavigation();
 
-  const handleNextTurn = useCallback(() => {
+  const handleNextTurn = () => {
     setTurns((previousAmount) => previousAmount + 1);
     setCurrentPlayer((previousPlayer) => (previousPlayer === 'human' ? 'ai' : 'human'));
-  }, []);
+  };
 
-  const checkLoseCondition = useCallback(() => {
+  const checkLoseCondition = () => {
     const filteredCities = gameCitiesList.filter((city) => city.startsWith(activeLetter));
     if (filteredCities.length === 0) {
       return true;
     }
     return false;
-  }, [gameCitiesList, activeLetter]);
+  };
 
-  const setupNewActiveLetter = useCallback((newCity: string) => {
+  const setupNewActiveLetter = (newCity: string) => {
     const penultimateNumber = 2;
     const lastLetter = newCity[newCity.length - 1].toUpperCase();
     const penultimateLetter = newCity[newCity.length - penultimateNumber].toUpperCase();
@@ -44,7 +44,7 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
       : lastLetter;
 
     setActiveLetter(filteredLastLetter);
-  }, []);
+  };
 
   const updateCitiesList = (enteredCity: string): void => {
     const usedCityIndex = gameCitiesList.indexOf(enteredCity);
@@ -68,7 +68,7 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
     }
   };
 
-  const handleAiTurn = useCallback(() => {
+  const handleAiTurn = () => {
     const pickRandomCity = () => {
       const filteredCities = gameCitiesList.filter((city) => city.startsWith(activeLetter));
       const randomIndex = Math.floor(Math.random() * filteredCities.length);
@@ -77,7 +77,9 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
     const pickedCity = pickRandomCity();
     handleTurnValidation(pickedCity);
     setupNewActiveLetter(pickedCity);
-  }, [activeLetter]);
+  };
+
+  /* 2-minutes countdown */
 
   useEffect(() => {
     const updateTimer = () => {
@@ -100,9 +102,11 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
 
     const timerInterval = setInterval(updateTimer, 1000);
 
-    setTimeLeft(10);
+    setTimeLeft(120);
     return () => clearInterval(timerInterval);
   }, [currentPlayer, page]);
+
+  /* Game reset */
 
   useEffect(() => {
     if (page === 1) {
@@ -118,6 +122,8 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
       setActiveLetter('');
     }
   }, [page]);
+
+  /* AI response and it's time */
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | null = null;
@@ -139,6 +145,8 @@ const GameLogicProvider = ({ children }: ProviderProps) => {
       }
     };
   }, [currentPlayer, page]);
+
+  /* Lose condition check */
 
   useEffect(() => {
     if (checkLoseCondition()) {
